@@ -10,17 +10,73 @@ import SwiftUI
 struct ContentView: View {
     @State private var moves = ["🪨", "🧻", "✂️"]
     var winningMoves = ["🧻", "✂️", "🪨"]
+    
+    //
+    //
+    @State private var rpslz = ["🦎", "🖖", "🪨", "🧻", "✂️"]
+    //rock paper scissors lizard spock
+    //set to where if you draw you will lose
+    @State private var winOne = ""
+    @State private var winTwo = ""
+    func winFunc(_ number: Int){
+        if winlose == false{
+            switch rpslz[number]{
+            case rpslz[0]:
+                winOne = "🖖"
+                winTwo = "🧻"
+            case rpslz[1]:
+                winOne = "✂️"
+                winTwo = "🪨"
+            case rpslz[2]:
+                winOne = "🦎"
+                winTwo = "✂️"
+            case rpslz[3]:
+                winOne = "🪨"
+                winTwo = "🖖"
+            case rpslz[4]:
+                winOne = "🧻"
+                winTwo = "🦎"
+            default:
+                winOne = rpslz[number]
+                winTwo = rpslz[number]
+            }
+        }else{
+            switch rpslz[number]{
+            case rpslz[0]:
+                winOne = "✂️"
+                winTwo = "🪨"
+            case rpslz[1]:
+                winOne = "🧻"
+                winTwo = "🦎"
+            case rpslz[2]:
+                winOne = "🧻"
+                winTwo = "🖖"
+            case rpslz[3]:
+                winOne = "✂️"
+                winTwo = "🦎"
+            case rpslz[4]:
+                winOne = "🪨"
+                winTwo = "🖖"
+            default:
+                winOne = "lost"
+                winTwo = "lost"
+        }
+        }
+    }
+    //
+    //
     //Whether the user should win or lose
     @State private var winlose = true
     @State private var questionCounter = 0
     //move the app makes
-    @State private var appMove = Int.random(in: 0...2)
+    @State private var appMove = Int.random(in: 0...4)
     //score handling
     @State private var scoreTitle = ""
     @State private var score = 0
     @State private var showingScore = false
     @State private var showingEndScore = false
     //used to determine the correct answer based on the appMove
+    /*
     func correctAnswer(_ number: Int) -> String{
         //If user should win
         if winlose == true{
@@ -48,7 +104,7 @@ struct ContentView: View {
                 return "Whoops"
             }
         }
-    }
+    }*/
     var body: some View {
         ZStack{
             RadialGradient(stops: [
@@ -59,23 +115,22 @@ struct ContentView: View {
         VStack{
                 Text("Rock Paper Scissors").font(.largeTitle.weight(.bold))
                     .foregroundColor(.white)
+            Text("Lizard Spock").font(.largeTitle.weight(.bold))
+                .foregroundColor(.white)
             VStack{
-                Spacer()
-                Text("Game chose: \(moves[appMove])").font(.largeTitle)
-                Spacer()
+                Text("Game chose: \(rpslz[appMove])").font(.title)
                 if(winlose == false){
-                    Text("You should: Lose").font(.title)
+                    Text("You should: Lose").font(.title2)
                 }else{
-                    Text("You should: Win").font(.title)
+                    Text("You should: Win").font(.title2)
                 }
             }
-            Spacer()
-            VStack(spacing: 30){
-                ForEach(0..<3){ number in
+            VStack(spacing: 20){
+                ForEach(0..<5){ number in
                     Button{
                         moveTapped(number)
                     } label: {
-                        Text(moves[number]).font(.system(size: 45))
+                        Text(rpslz[number]).font(.system(size: 35))
                     }
                 }
             }.frame(maxWidth: 200)
@@ -83,11 +138,8 @@ struct ContentView: View {
                 .background(.regularMaterial)
                 .clipShape(RoundedRectangle(cornerRadius: 20))
             VStack{
-                Spacer()
-                Spacer()
                 Text("Score: \(score)").font(.largeTitle.weight(.bold))
                     .foregroundColor(.white)
-                Spacer()
             }
         }
         }
@@ -105,6 +157,7 @@ struct ContentView: View {
     }
     
     func moveTapped(_ number: Int){
+        /*
         if(moves[number] == correctAnswer(appMove)){
             scoreTitle = "Win"
             score += 1
@@ -121,12 +174,32 @@ struct ContentView: View {
         }
         else{
         showingScore = true
+        }*/
+        //
+        //
+        winFunc(appMove)
+        if rpslz[number] == winOne || rpslz[number] == winTwo{
+            scoreTitle = "Win"
+            score += 1
+        }else{
+            scoreTitle = "Lose"
+            score -= 1
         }
+        winlose.toggle()
+        questionCounter += 1
+        if questionCounter == 10{
+            showingEndScore = true
+        }
+        else{
+        showingScore = true
+        }
+        //
+        //
     }
     
     //game handling
     func nextMove(){
-        appMove = Int.random(in: 0...2)
+        appMove = Int.random(in: 0...4)
     }
     func resetGame(){
         questionCounter = 0
