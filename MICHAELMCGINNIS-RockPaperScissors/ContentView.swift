@@ -4,7 +4,7 @@
 //
 //  Created by Michael Mcginnis on 2/9/22.
 //
-
+//I used GuessTheFlag as a reference
 import SwiftUI
 
 struct ContentView: View {
