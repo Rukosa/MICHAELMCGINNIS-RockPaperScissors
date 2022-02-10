@@ -64,22 +64,21 @@ struct ContentView: View {
                 Text("Game chose: \(moves[appMove])").font(.largeTitle)
                 Spacer()
                 if(winlose == false){
-                    Text("You should: Lose")
+                    Text("You should: Lose").font(.title)
                 }else{
-                    Text("You should: Win")
+                    Text("You should: Win").font(.title)
                 }
             }
             Spacer()
             VStack(spacing: 30){
-                Spacer()
                 ForEach(0..<3){ number in
                     Button{
                         moveTapped(number)
                     } label: {
-                        Text(moves[number]).font(.largeTitle)
+                        Text(moves[number]).font(.system(size: 45))
                     }
                 }
-            }.frame(maxWidth: .infinity)
+            }.frame(maxWidth: 200)
                 .padding(.vertical, 20)
                 .background(.regularMaterial)
                 .clipShape(RoundedRectangle(cornerRadius: 20))
